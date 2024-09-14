@@ -1,36 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
+import axios from 'axios';
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: "Inception",
-      image: "https://image.tmdb.org/t/p/original/ljsZTbVsrQSqZgWeep2B1QiDKuh.jpg",
-      description: "A thief who steals corporate secrets through the use of dream-sharing technology.",
-      genre: "Science Fiction",
-      director: "Christopher Nolan",
-    },
-    {
-      id: 2,
-      title: "The Godfather",
-      image: "https://image.tmdb.org/t/p/original/hMTncCsOwZZCNOo5SBhE1wQKpid.jpg",
-      description: "The aging patriarch of an organized crime dynasty transfers control to his reluctant son.",
-      genre: "Crime",
-      director: "Francis Ford Coppola",
-    },
-    {
-      id: 3,
-      title: "Pulp Fiction",
-      image: "https://image.tmdb.org/t/p/original/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-      description: "The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-      genre: "Crime",
-      director: "Quentin Tarantino",
-    },
-  ]);
-
+  const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    axios.get('https://jar-movies-flix-9c6c1a784786.herokuapp.com/')
+      .then((response) => {
+        setMovies(response.data);
+      })
+      .catch((error) => {
+        console.log('Error fetching movies: ', error);
+      });
+  }, []);
 
   if (selectedMovie) {
     return (
@@ -49,7 +34,7 @@ export const MainView = () => {
     <div>
       {movies.map((movie) => (
         <MovieCard
-          key={movie.id}
+          key={movie._id} // Use _id from the API data
           movie={movie}
           onMovieClick={(newSelectedMovie) => {
             setSelectedMovie(newSelectedMovie);
