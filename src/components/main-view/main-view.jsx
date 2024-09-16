@@ -8,7 +8,7 @@ export const MainView = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
-    axios.get('https://jar-movies-flix-9c6c1a784786.herokuapp.com/')
+    axios.get('https://jar-movies-flix-9c6c1a784786.herokuapp.com/movies')
       .then((response) => {
         setMovies(response.data);
       })
