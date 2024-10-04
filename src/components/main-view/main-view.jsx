@@ -3,6 +3,9 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -31,63 +34,75 @@ export const MainView = () => {
   if (!user) {
     return (
       <>
-        {isSignup ? (
-          <SignupView
-            onSignedUp={() => {
-              setIsSignup(false);
-              alert("Signup successful. Please log in.");
-            }}
-          />
-        ) : (
-          <LoginView
-            onLoggedIn={(user, token) => {
-              setUser(user);
-              setToken(token);
-              localStorage.setItem("user", JSON.stringify(user));
-              localStorage.setItem("token", token);
-            }}
-          />
-        )}
-        <button onClick={() => setIsSignup(!isSignup)}>
-          {isSignup ? "Go to Login" : "Go to Signup"}
-        </button>
+        <Row className="justify-content-md-center">
+          <Col xs={12} md={6}>
+            {isSignup ? (
+              <SignupView
+                onSignedUp={() => {
+                  setIsSignup(false);
+                  alert("Signup successful. Please log in.");
+                }}
+              />
+            ) : (
+              <LoginView
+                onLoggedIn={(user, token) => {
+                  setUser(user);
+                  setToken(token);
+                  localStorage.setItem("user", JSON.stringify(user));
+                  localStorage.setItem("token", token);
+                }}
+              />
+            )}
+            <Button onClick={() => setIsSignup(!isSignup)} variant="link">
+              {isSignup ? "Go to Login" : "Go to Signup"}
+            </Button>
+          </Col>
+        </Row>
       </>
     );
   }
 
   if (selectedMovie) {
     return (
-      <MovieView
-        movie={selectedMovie}
-        onBackClick={() => setSelectedMovie(null)}
-      />
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={8}>
+          <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />
+        </Col>
+      </Row>
     );
   }
 
   if (movies.length === 0) {
-    return <div>The movie list is empty!</div>;
+    return <div className="text-center">The movie list is empty!</div>;
   }
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      >
-        Logout
-      </button>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie._id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
+    <Row className="justify-content-md-center">
+      <Col xs={12} className="text-right">
+        <Button
+          onClick={() => {
+            setUser(null);
+            setToken(null);
+            localStorage.clear();
           }}
-        />
-      ))}
-    </div>
+        >
+          Logout
+        </Button>
+      </Col>
+      <Col xs={12}>
+        <Row>
+          {movies.map((movie) => (
+            <Col xs={12} md={4} lg={3} key={movie._id}>
+              <MovieCard
+                movie={movie}
+                onMovieClick={(newSelectedMovie) => {
+                  setSelectedMovie(newSelectedMovie);
+                }}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Col>
+    </Row>
   );
 };
