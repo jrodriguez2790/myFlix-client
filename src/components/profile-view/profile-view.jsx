@@ -7,7 +7,7 @@ export const ProfileView = ({ user, movies }) => {
 
   useEffect(() => {
     if (movies.length > 0) {
-      const favMovies = movies.filter((m) => user.FavoriteMovies.includes(m._id));
+      const favMovies = movies.filter((m) => user.FavoriteMovies?.includes(m._id));
       setFavoriteMovies(favMovies);
     }
   }, [movies, user.FavoriteMovies]);
