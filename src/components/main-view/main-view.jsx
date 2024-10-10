@@ -43,7 +43,7 @@ export const MainView = () => {
   };
 
   return (
-    <Router>
+    <div>
       <NavigationBar user={user} onLoggedOut={onLoggedOut} />
       <Routes>
         {/* Login Route */}
@@ -119,7 +119,7 @@ export const MainView = () => {
         {/* Catch-all Route for Unknown Paths */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Router>
+    </div>
   );
 };
 
