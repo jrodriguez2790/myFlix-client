@@ -1,11 +1,31 @@
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import "./movie-view.scss";
 
-export const MovieView = ({ movies }) => {
+export const MovieView = ({ movies, user, token, updateFavorites }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m._id === movieId);
+
+  const addToFavorites = () => {
+    fetch(`https://jar-movies-flix-9c6c1a784786.herokuapp.com/users/${user.username}/movies/${movieId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+      .then((response) => response.json())
+      .then((updatedUser) => {
+        updateFavorites(updatedUser.FavoriteMovies);
+        alert(`${movie.title} has been added to your favorites.`);
+      })
+      .catch((error) => {
+        console.error('Error addying to favorite movies: ', error);
+        alert("Something went wrong!");
+      });
+  };
 
   if (!movie) return <div>Movie not found!</div>;
 
@@ -30,10 +50,9 @@ export const MovieView = ({ movies }) => {
         <span>Director: </span>
         <span>{movie.director.name}</span>
       </div>
+      <Button onClick={addToFavorites}>Add to Favorites</Button>
       <Link to="/">
-        <button className="back-button" style={{ cursor: "pointer" }}>
-          Back
-        </button>
+        <button className="back-button" style={{ cursor: "pointer" }}>Back</button>
       </Link>
     </div>
   );
@@ -54,4 +73,7 @@ MovieView.propTypes = {
       image: PropTypes.string.isRequired,
     })
   ).isRequired,
+  user: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
+  updateFavorites: PropTypes.func.isRequired
 };
