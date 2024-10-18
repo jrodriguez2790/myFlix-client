@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MovieCard } from "../movie-card/movie-card";
+import Button from "react-bootstrap/Button";
 
-export const ProfileView = ({ user, movies }) => {
+export const ProfileView = ({ user, movies, token, updateFavorites }) => {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
 
   useEffect(() => {
@@ -11,6 +12,19 @@ export const ProfileView = ({ user, movies }) => {
       setFavoriteMovies(favMovies);
     }
   }, [movies, user.FavoriteMovies]);
+
+  const removeFromFavorites = (movieId) => {
+    fetch(`https://jar-movies-flix-9c6c1a784786.herokuapp.com/users/${user.username}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((updatedUser) => {
+        updateFavorites(updatedUser.FavoriteMovies);
+        setFavoriteMovies(movies.filter((m) => updatedUser.FavoriteMovies.includes(m._id)));
+      })
+      .catch((e) => alert("Error removing movie from favorites."));
+  };
 
   return (
     <div>
@@ -22,7 +36,10 @@ export const ProfileView = ({ user, movies }) => {
         {favoriteMovies.length > 0 ? (
           <div className="favorites-list">
             {favoriteMovies.map((movie) => (
-              <MovieCard key={movie._id} movie={movie} />
+              <div key={movie._id}>
+                <MovieCard movie={movie} />
+                <Button onClick={() => removeFromFavorites(movie._id)}>Remove from Favorites</Button>
+              </div>
             ))}
           </div>
         ) : (
@@ -46,4 +63,6 @@ ProfileView.propTypes = {
       title: PropTypes.string.isRequired,
     })
   ).isRequired,
+  token: PropTypes.string.isRequired,
+  updateFavorites: PropTypes.func.isRequired,
 };
