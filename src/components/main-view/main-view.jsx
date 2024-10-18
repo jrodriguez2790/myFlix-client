@@ -34,6 +34,12 @@ export const MainView = () => {
       });
   }, [token]);
 
+  const updateFavorites = (favoriteMovies) => {
+    setUser({ ...user, FavoriteMovies: favoriteMovies });
+    localStorage.setItem("user", JSON.stringify({ ...user, FavoriteMovies: favoriteMovies }));
+  };
+
+
   const onLoggedOut = () => {
     setUser(null);
     setToken(null);
@@ -109,7 +115,7 @@ export const MainView = () => {
           path="/movies/:movieId"
           element={
             user ? (
-              <MovieView movies={movies} />
+              <MovieView movies={movies} user={user} token={token} updateFavorites={updateFavorites} />
             ) : (
               <Navigate to="/login" />
             )
