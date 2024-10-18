@@ -8,20 +8,19 @@ import { ProfileView } from "../profile-view/profile-view";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { NavigationBar } from "../navigation-bar/navigation-bar"; // Navigation bar for consistent navigation across views
+import Form from "react-bootstrap/Form";
+import { NavigationBar } from "../navigation-bar/navigation-bar";
 
 export const MainView = () => {
-  // Retrieve stored user and token from local storage
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
 
-  // States for user, token, movies, and signup toggle
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
   const [isSignup, setIsSignup] = useState(false);
+  const [filter, setFilter] = useState(""); // new state for the movie filter
 
-  // Fetch movies when token changes (user is authenticated)
   useEffect(() => {
     if (!token) return;
 
@@ -31,27 +30,40 @@ export const MainView = () => {
       .then((response) => response.json())
       .then((movies) => setMovies(movies))
       .catch((error) => {
-        console.log("Error fetching movies: ", error); // Log any errors encountered during fetch
+        console.log("Error fetching movies: ", error);
       });
   }, [token]);
 
-  // Logout function to clear user and token from state and local storage
   const onLoggedOut = () => {
     setUser(null);
     setToken(null);
-    localStorage.clear(); // Clear local storage to remove user session data
+    localStorage.clear();
   };
+
+  const filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(filter.toLowerCase()) ||
+    movie.genre.name.toLowerCase().includes(filter.toLowerCase()) // filter by title or genre
+  );
 
   return (
     <div>
       <NavigationBar user={user} onLoggedOut={onLoggedOut} />
+      <Form className="mb-3">
+        <Form.Group controlId="formMovieFilter">
+          <Form.Control
+            type="text"
+            placeholder="Filter by title or genre"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)} // update filter on input change
+          />
+        </Form.Group>
+      </Form>
       <Routes>
-        {/* Login Route */}
         <Route
           path="/login"
           element={
             user ? (
-              <Navigate to="/" /> // Redirect to home if already authenticated
+              <Navigate to="/" />
             ) : (
               <Row className="justify-content-md-center">
                 <Col xs={12} md={6}>
@@ -59,7 +71,7 @@ export const MainView = () => {
                     <SignupView
                       onSignedUp={() => {
                         setIsSignup(false);
-                        alert("Signup successful. Please log in."); // Notify the user after successful signup
+                        alert("Signup successful. Please log in.");
                       }}
                     />
                   ) : (
@@ -68,12 +80,12 @@ export const MainView = () => {
                         setUser(user);
                         setToken(token);
                         localStorage.setItem("user", JSON.stringify(user));
-                        localStorage.setItem("token", token); // Save user and token to local storage
+                        localStorage.setItem("token", token);
                       }}
                     />
                   )}
                   <Button
-                    onClick={() => setIsSignup(!isSignup)} // Toggle between signup and login views
+                    onClick={() => setIsSignup(!isSignup)}
                     variant="link"
                   >
                     {isSignup ? "Go to Login" : "Go to Signup"}
@@ -83,50 +95,46 @@ export const MainView = () => {
             )
           }
         />
-        {/* Home Route */}
         <Route
           path="/"
           element={
             user ? (
-              <MovieList movies={movies} />
+              <MovieList movies={filteredMovies} />
             ) : (
-              <Navigate to="/login" /> // Redirect to login if not authenticated
+              <Navigate to="/login" />
             )
           }
         />
-        {/* Movie Details Route */}
         <Route
           path="/movies/:movieId"
           element={
             user ? (
               <MovieView movies={movies} />
             ) : (
-              <Navigate to="/login" /> // Redirect to login if not authenticated
+              <Navigate to="/login" />
             )
           }
         />
-        {/* Profile Route */}
         <Route
           path="/profile"
           element={
             user ? (
               <ProfileView user={user} movies={movies} />
             ) : (
-              <Navigate to="/login" /> // Redirect to login if not authenticated
+              <Navigate to="/login" />
             )
           }
         />
-        {/* Catch-all Route for Unknown Paths */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );
 };
 
-// Separate component to render movie list
+// separate component to render movie list
 const MovieList = ({ movies }) => {
   if (movies.length === 0) {
-    return <div className="text-center">The movie list is empty!</div>; // Display message if no movies available
+    return <div className="text-center">The movie list is empty.</div>;
   }
 
   return (
