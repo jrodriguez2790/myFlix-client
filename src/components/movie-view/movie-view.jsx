@@ -27,6 +27,11 @@ export const MovieView = ({ movies, user, token, updateFavorites }) => {
       });
   };
 
+  const updateFavorites = (favoriteMovies) => {
+    setUser({ ...user, FavoriteMovies: favoriteMovies });
+    localStorage.setItem("user", JSON.stringify({ ...user, FavoriteMovies: favoriteMovies }));
+  };
+
   if (!movie) return <div>Movie not found!</div>;
 
   return (
