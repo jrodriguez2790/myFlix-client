@@ -8,10 +8,11 @@ export const ProfileView = ({ user, movies, token, updateFavorites }) => {
 
   useEffect(() => {
     if (movies.length > 0) {
-      const favMovies = movies.filter((m) => user.FavoriteMovies?.includes(m._id));
-      setFavoriteMovies(favMovies);
+      console.log("ProfileView user.FavoriteMovies:", user.FavoriteMovies); // log the users favorite movies
+      const favoriteMovies = movies.filter((m) => user.FavoriteMovies?.includes(m._id));
+      setFavoriteMovies(favoriteMovies);
     }
-  }, [movies, user.FavoriteMovies]);
+  }, [movies, user.FavoriteMovies]); // runs when user.FavoriteMovies changes
 
   const removeFromFavorites = (movieId) => {
     fetch(`https://jar-movies-flix-9c6c1a784786.herokuapp.com/users/${user.username}/movies/${movieId}`, {
