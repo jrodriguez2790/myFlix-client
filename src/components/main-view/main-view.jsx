@@ -35,8 +35,9 @@ export const MainView = () => {
   }, [token]);
 
   const updateFavorites = (favoriteMovies) => {
-    setUser({ ...user, FavoriteMovies: favoriteMovies });
-    localStorage.setItem("user", JSON.stringify({ ...user, FavoriteMovies: favoriteMovies }));
+    const updatedUser = { ...user, FavoriteMovies: favoriteMovies };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
 
