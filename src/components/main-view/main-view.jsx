@@ -126,7 +126,7 @@ export const MainView = () => {
           path="/profile"
           element={
             user ? (
-              <ProfileView user={user} movies={movies} />
+              <ProfileView user={user} movies={movies} token={token} updateFavorites={updateFavorites} />
             ) : (
               <Navigate to="/login" />
             )
