@@ -19,7 +19,7 @@ export const MovieView = ({ movies, user, token, updateFavorites }) => {
       .then((response) => response.json())
       .then((updatedUser) => {
         console.log("Updated user data: ", updatedUser); // checks the response
-        updateFavorites(updatedUser.FavoriteMovies);
+        updateFavorites(updatedUser.favoritemovies);
         alert(`${movie.title} has been added to your favorites.`);
       })
       .catch((error) => {
