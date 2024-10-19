@@ -34,8 +34,8 @@ export const MainView = () => {
       });
   }, [token]);
 
-  const updateFavorites = (favoriteMovies) => {
-    const updatedUser = { ...user, FavoriteMovies: favoriteMovies };
+  const updateFavorites = (favoritemovies) => {
+    const updatedUser = { ...user, favoritemovies: favoritemovies };
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
