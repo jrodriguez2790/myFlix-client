@@ -18,11 +18,12 @@ export const MovieView = ({ movies, user, token, updateFavorites }) => {
     })
       .then((response) => response.json())
       .then((updatedUser) => {
+        console.log("Updated user data: ", updatedUser); // checks the response
         updateFavorites(updatedUser.FavoriteMovies);
         alert(`${movie.title} has been added to your favorites.`);
       })
       .catch((error) => {
-        console.error('Error addying to favorite movies: ', error);
+        console.error('Error adding to favorite movies: ', error);
         alert("Something went wrong!");
       });
   };
