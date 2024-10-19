@@ -4,15 +4,15 @@ import { MovieCard } from "../movie-card/movie-card";
 import Button from "react-bootstrap/Button";
 
 export const ProfileView = ({ user, movies, token, updateFavorites }) => {
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [favoritemovies, setFavoriteMovies] = useState([]);
 
   useEffect(() => {
     if (movies.length > 0) {
-      console.log("ProfileView user.FavoriteMovies:", user.FavoriteMovies); // log the users favorite movies
-      const favoriteMovies = movies.filter((m) => user.FavoriteMovies?.includes(m._id));
-      setFavoriteMovies(favoriteMovies);
+      console.log("ProfileView user.favoritemovies:", user.favoritemovies); // log the users favorite movies
+      const favoritemovies = movies.filter((m) => user.favoritemovies?.includes(m._id));
+      setFavoriteMovies(favoritemovies);
     }
-  }, [movies, user.FavoriteMovies]); // runs when user.FavoriteMovies changes
+  }, [movies, user.favoritemovies]); // runs when user.FavoriteMovies changes
 
   const removeFromFavorites = (movieId) => {
     fetch(`https://jar-movies-flix-9c6c1a784786.herokuapp.com/users/${user.username}/movies/${movieId}`, {
@@ -21,8 +21,8 @@ export const ProfileView = ({ user, movies, token, updateFavorites }) => {
     })
       .then((response) => response.json())
       .then((updatedUser) => {
-        updateFavorites(updatedUser.FavoriteMovies);
-        setFavoriteMovies(movies.filter((m) => updatedUser.FavoriteMovies.includes(m._id)));
+        updateFavorites(updatedUser.favoritemovies);
+        setFavoriteMovies(movies.filter((m) => updatedUser.favoritemovies.includes(m._id)));
       })
       .catch((e) => alert("Error removing movie from favorites."));
   };
@@ -34,9 +34,9 @@ export const ProfileView = ({ user, movies, token, updateFavorites }) => {
       <p>Birthday: {user.birthday}</p>
       <h3>Favorite Movies:</h3>
       <div>
-        {favoriteMovies.length > 0 ? (
+        {favoritemovies.length > 0 ? (
           <div className="favorites-list">
-            {favoriteMovies.map((movie) => (
+            {favoritemovies.map((movie) => (
               <div key={movie._id}>
                 <MovieCard movie={movie} />
                 <Button onClick={() => removeFromFavorites(movie._id)}>Remove from Favorites</Button>
@@ -56,7 +56,7 @@ ProfileView.propTypes = {
     username: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     birthday: PropTypes.string.isRequired,
-    FavoriteMovies: PropTypes.arrayOf(PropTypes.string).isRequired,
+    favoritemovies: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   movies: PropTypes.arrayOf(
     PropTypes.shape({
