@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { MovieCard } from "../movie-card/movie-card";
 import Button from "react-bootstrap/Button";
+import './profile-view.scss'; // Import SCSS file
 
 export const ProfileView = ({ user, movies, token, updateFavorites }) => {
   const [favoritemovies, setFavoriteMovies] = useState([]);
