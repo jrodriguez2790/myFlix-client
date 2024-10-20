@@ -1,65 +1,7 @@
-$primary-color: #B5651D; // Warm brown
-$secondary-color: #F4A460; // Sandy brown
-$background-color: #FAF3DD; // Light warm beige
-$text-color: #333; // Dark grey for accessibility
-$highlight-color: #E68A00; // Orange for highlights
-
-body {
-  background-color: $background-color;
-  color: $text-color;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.main-view {
-  text-align: center;
-  margin-top: 2rem;
-
-  .movie-list-filter {
-    margin-bottom: 2rem;
-  }
-}
-
-.movie-card {
-  background-color: $primary-color;
-  color: whitesmoke;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.05);
-    background-color: $highlight-color;
-  }
-
-  .card-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .card-text {
-    font-size: 1rem;
-  }
-
-  .btn {
-    background-color: whitesmoke;
-    color: $primary-color;
-    font-weight: bold;
-
-    &:hover {
-      background-color: $secondary-color;
-      color: whitesmoke;
-    }
-  }
-}
-
 .back-button {
-  padding: 0.5rem 1rem;
+  padding: 4px 12px 4px 12px;
   color: whitesmoke;
-  background-color: $primary-color;
+  background-color: dodgerblue;
   border: none;
   border-radius: 4px;
-
-  &:hover {
-    background-color: $highlight-color;
-  }
 }
