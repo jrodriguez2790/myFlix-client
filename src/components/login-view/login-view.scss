@@ -1,0 +1,25 @@
+@import '../index.scss'; // Import the main styles for consistent variables
+
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: $primary-color;
+  border-radius: 8px;
+  color: whitesmoke;
+
+  .input-field {
+    background-color: whitesmoke;
+    border: none;
+    color: $primary-color;
+  }
+
+  .login-button {
+    background-color: $highlight-color;
+    color: whitesmoke;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
